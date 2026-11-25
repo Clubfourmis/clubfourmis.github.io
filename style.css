@@ -1,0 +1,694 @@
+@font-face {
+  font-family: 'Karrik';
+  src: url('fonts/Karrik-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Karrik';
+  src: url('fonts/Karrik-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --brand-yellow: #f1e7ff;
+  --brand-purple: #9c00ff;
+  --placeholder-gray: #d9d9d9;
+  --ink-black: #310050;
+
+  --font-karrik: 'Karrik', system-ui, -apple-system, sans-serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --logo-left: clamp(1.25rem, 6.5vw, 5.8rem);
+  --logo-width: clamp(138px, 14.8vw, 216px);
+  --logo-clearance: clamp(1rem, 2vw, 1.75rem);
+  --side-gutter: calc(var(--logo-left) + var(--logo-width) + var(--logo-clearance));
+}
+
+:root.night-mode {
+  --brand-yellow: #9c00ff;
+  --brand-purple: #f1e7ff;
+  --ink-black: #f1e7ff;
+  --placeholder-gray: #6b00b3;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-karrik);
+  background-color: var(--brand-yellow);
+  color: var(--ink-black);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  transition: background-color 220ms var(--ease-out), color 220ms var(--ease-out);
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.page {
+  width: 100%;
+  background-color: var(--brand-yellow);
+  transition: background-color 220ms var(--ease-out);
+}
+
+/* Section 1 (100vh) : Logo sticky en haut à gauche + 3 images en quinconce */
+.hero-section {
+  position: relative;
+  width: min(1440px, 100%);
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(5.5rem, 11vh, 7.5rem) 0 clamp(2rem, 4vh, 3.5rem);
+}
+
+.logo-wrap {
+  position: sticky;
+  top: clamp(1.35rem, 3vw, 2.5rem);
+  z-index: 40;
+  width: min(1440px, 100%);
+  height: 0;
+  margin: 0 auto;
+  padding-left: var(--logo-left);
+  pointer-events: none;
+}
+
+.logo-link {
+  display: inline-block;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.logo-link:focus-visible {
+  outline: 2px solid var(--brand-purple);
+  outline-offset: 4px;
+}
+
+.site-logo {
+  display: block;
+  width: var(--logo-width);
+  object-fit: cover;
+  object-position: center 52.5%;
+  height: auto;
+  transition: filter 220ms var(--ease-out);
+}
+
+:root.night-mode .site-logo {
+  filter: brightness(0) invert(1);
+}
+
+/* Collage des 3 images d'ouverture (img1, img2, img3) */
+.collage {
+  position: relative;
+  width: 100%;
+  height: min(76vh, 660px);
+}
+
+.image-slot {
+  background-color: var(--placeholder-gray);
+  overflow: hidden;
+}
+
+.slot-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 1;
+}
+
+.slot-img.is-missing {
+  opacity: 0;
+}
+
+.slot-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-family: var(--font-karrik);
+  font-size: clamp(0.875rem, 1.3vw, 1.15rem);
+  color: var(--ink-black);
+  pointer-events: none;
+}
+
+.slot-img.is-loaded + .slot-placeholder {
+  display: none;
+}
+
+.collage-card {
+  position: absolute;
+  margin: 0;
+  width: min(45%, 65vh);
+  aspect-ratio: 420 / 492;
+}
+
+.collage-img1 {
+  left: 5%;
+  top: 6%;
+  z-index: 2;
+}
+
+.collage-img2 {
+  left: 30%;
+  top: -12%;
+  z-index: 1;
+}
+
+.collage-img3 {
+  left: 60%;
+  top: 0%;
+  z-index: 3;
+}
+
+/* Sections communes (100vh chacune) : "Les ateliers", "FAQ" et "Contact" */
+.content-block {
+  width: min(1440px, 100%);
+  margin: 0 auto;
+}
+
+.workshops-section,
+.faq-section,
+.contact-section {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: clamp(3.5rem, 7vh, 5.5rem) 0;
+}
+
+.content-inner {
+  width: calc(100% - 2 * var(--side-gutter));
+  margin: 0 auto;
+}
+
+.dotted-heading {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 clamp(1.75rem, 3.6vh, 3rem) 8.5%;
+  padding: 0 0 11px;
+  font-family: var(--font-karrik);
+  font-weight: 400;
+  font-size: clamp(1.35rem, 2.05vw, 1.85rem);
+  line-height: 1.15;
+  color: var(--brand-purple);
+  letter-spacing: -0.01em;
+}
+
+.dotted-heading::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: var(--dots-width, 100%);
+  bottom: 0;
+  height: 6px;
+  background-image: radial-gradient(
+    circle 2.5px at 2.5px 3px,
+    var(--brand-purple) 2.3px,
+    transparent 2.7px
+  );
+  background-size: 11px 6px;
+  background-repeat: var(--dots-repeat, space no-repeat);
+  background-position: left center;
+}
+
+/* Grille 2x2 des ateliers */
+.workshops-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.25rem, 4vh, 3.5rem);
+}
+
+.workshops-actions[hidden] {
+  display: none;
+}
+
+.workshops-actions {
+  margin-top: clamp(1.75rem, 3.6vh, 2.75rem);
+  display: flex;
+  justify-content: center;
+}
+
+.workshops-more-btn {
+  border: 3px solid var(--brand-purple);
+  border-radius: 50%;
+  background: transparent;
+  padding: 0.65rem 1rem;
+  font-family: var(--font-karrik);
+  font-weight: 700;
+  font-size: clamp(1rem, 1.3vw, 1.125rem);
+  color: var(--brand-purple);
+  cursor: pointer;
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+
+.workshops-more-btn:hover {
+  background-color: var(--brand-purple);
+  color: var(--brand-yellow);
+}
+
+.workshops-more-btn:focus-visible {
+  outline: 2px solid var(--brand-purple);
+  outline-offset: 4px;
+}
+
+.workshops-empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 2rem 0;
+  font-size: 1.05rem;
+  color: var(--ink-black);
+}
+
+.workshop-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+  border: none;
+  background-color: var(--placeholder-gray);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-karrik);
+  transition: transform 180ms var(--ease-out);
+}
+
+.workshop-card:hover {
+  transform: translateY(-3px);
+}
+
+.workshop-card:focus-visible {
+  outline: 2px solid var(--brand-purple);
+  outline-offset: 4px;
+}
+
+.workshop-date {
+  position: absolute;
+  top: clamp(0.85rem, 1.8vw, 1.5rem);
+  left: clamp(0.95rem, 2vw, 1.75rem);
+  z-index: 2;
+  font-family: var(--font-karrik);
+  font-style: italic;
+  font-size: clamp(0.875rem, 1.2vw, 1.125rem);
+  line-height: 1.2;
+  color: var(--brand-purple);
+  text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff,
+    1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff;
+}
+
+.workshop-title {
+  position: absolute;
+  bottom: clamp(0.95rem, 2vw, 1.75rem);
+  left: clamp(0.95rem, 2vw, 1.75rem);
+  right: clamp(0.95rem, 2vw, 1.75rem);
+  z-index: 2;
+  font-family: var(--font-karrik);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 1.75vw, 1.65rem);
+  line-height: 1.15;
+  color: var(--brand-purple);
+  text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff,
+    1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff;
+}
+
+:root.night-mode .workshop-date,
+:root.night-mode .workshop-title {
+  text-shadow: 2px 0 #9c00ff, -2px 0 #9c00ff, 0 2px #9c00ff, 0 -2px #9c00ff,
+    1px 1px #9c00ff, -1px -1px #9c00ff, 1px -1px #9c00ff, -1px 1px #9c00ff;
+}
+
+.workshop-card .slot-placeholder {
+  justify-content: flex-start;
+  padding-left: 36%;
+  padding-bottom: 6%;
+}
+
+/* Section FAQ (accordéon questions / réponses) */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.35rem, 3.2vh, 2.25rem);
+}
+
+.faq-item {
+  width: 100%;
+}
+
+.faq-question {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.25rem;
+  width: 100%;
+  padding: 0.45rem 0;
+  border: none;
+  background: transparent;
+  font-family: var(--font-karrik);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 1.8vw, 1.55rem);
+  line-height: 1.3;
+  color: var(--brand-purple);
+  text-align: left;
+  cursor: pointer;
+  transition: opacity 160ms var(--ease-out);
+}
+
+.faq-question:hover {
+  opacity: 0.78;
+}
+
+.faq-question:focus-visible {
+  outline: 2px solid var(--brand-purple);
+  outline-offset: 4px;
+}
+
+.faq-icon {
+  flex-shrink: 0;
+  font-weight: 400;
+  font-size: 1.35em;
+  line-height: 1;
+  transition: transform 180ms var(--ease-out);
+}
+
+.faq-question[aria-expanded='true'] .faq-icon {
+  transform: rotate(45deg);
+}
+
+.faq-answer[hidden] {
+  display: none;
+}
+
+.faq-answer {
+  padding-top: 0.5rem;
+  max-width: 62ch;
+}
+
+.faq-answer p {
+  margin: 0;
+  font-size: clamp(0.975rem, 1.25vw, 1.08rem);
+  line-height: 1.55;
+  color: var(--ink-black);
+}
+
+/* Section Contact (widget Instagram + mail) */
+.contact-section .content-inner {
+  width: calc(100% - 2 * var(--side-gutter));
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 3.5vw, 3.5rem);
+  align-items: start;
+}
+
+.instagram-widget {
+  position: relative;
+  width: 100%;
+  background-color: transparent;
+  overflow: visible;
+}
+
+.instagram-widget .instagram-media,
+.instagram-widget iframe {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  border: 0;
+  display: block;
+}
+
+.contact-copy {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3.2vh, 2.5rem);
+  padding-top: 0.25rem;
+}
+
+.contact-lead,
+.contact-email {
+  margin: 0;
+  font-family: var(--font-karrik);
+  font-weight: 700;
+  font-size: clamp(1.125rem, 1.75vw, 1.5rem);
+  line-height: 1.35;
+  color: var(--brand-purple);
+}
+
+.contact-mail-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.contact-mail-link:hover,
+.contact-mail-link:focus-visible {
+  text-decoration: underline;
+}
+
+/* Popup atelier (image + texte en dessous) */
+.modal-backdrop[hidden] {
+  display: none;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background-color: rgba(17, 17, 17, 0.55);
+}
+
+.modal-dialog {
+  position: relative;
+  width: min(520px, 100%);
+  max-height: calc(100vh - 3rem);
+  overflow-y: auto;
+  background-color: var(--brand-yellow);
+  padding: 0;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 3;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: rgba(241, 231, 255, 0.88);
+  color: #310050;
+  font-family: var(--font-karrik);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  color: #9c00ff;
+  background-color: #f1e7ff;
+}
+
+.modal-close:focus-visible {
+  outline: 2px solid var(--brand-purple);
+  outline-offset: 2px;
+}
+
+.modal-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  margin-top: 0;
+}
+
+.modal-body {
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.modal-date {
+  margin: 0 0 0.35rem;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--brand-purple);
+}
+
+.modal-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--brand-purple);
+}
+
+.modal-meta {
+  margin: 0 0 0.85rem;
+  font-size: 0.9375rem;
+  color: var(--ink-black);
+}
+
+.modal-location-link {
+  color: var(--brand-purple);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.modal-location-link:hover,
+.modal-location-link:focus-visible {
+  opacity: 0.78;
+}
+
+.modal-desc {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ink-black);
+}
+
+.modal-actions[hidden] {
+  display: none;
+}
+
+.modal-actions {
+  margin-top: 1.25rem;
+}
+
+.modal-register-link {
+  display: inline-block;
+  border: 1.5px solid var(--brand-purple);
+  padding: 0.6rem 1.35rem;
+  font-family: var(--font-karrik);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--brand-purple);
+  text-decoration: none;
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+
+.modal-register-link:hover {
+  background-color: var(--brand-purple);
+  color: var(--brand-yellow);
+}
+
+.modal-register-link:focus-visible {
+  outline: 2px solid var(--brand-purple);
+  outline-offset: 4px;
+}
+
+/* Responsive mobile (<= 760px) */
+@media (max-width: 760px) {
+  .logo-wrap {
+    position: relative;
+    top: auto;
+    height: auto;
+    padding: 1.25rem 1.25rem 0;
+    pointer-events: auto;
+  }
+
+  .hero-section {
+    min-height: calc(100svh - 5.5rem);
+    justify-content: flex-start;
+    padding: 1.5rem 1.25rem 2.5rem;
+  }
+
+  .site-logo {
+    width: 146px;
+  }
+
+  .collage {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .collage-card {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 74%;
+    aspect-ratio: 5 / 4;
+  }
+
+  .collage-img1 {
+    align-self: flex-start;
+  }
+
+  .collage-img2 {
+    align-self: flex-end;
+  }
+
+  .collage-img3 {
+    align-self: flex-start;
+  }
+
+  .workshops-section,
+  .faq-section,
+  .contact-section {
+    align-items: flex-start;
+    padding: 3.5rem 0;
+  }
+
+  .content-inner,
+  .contact-section .content-inner {
+    width: calc(100% - 2.5rem);
+  }
+
+  .dotted-heading {
+    margin-left: 0;
+  }
+
+  .workshops-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body,
+  .page,
+  .site-logo,
+  .workshop-card,
+  .workshops-more-btn,
+  .modal-register-link,
+  .faq-question,
+  .faq-icon {
+    transition: none;
+  }
+}
