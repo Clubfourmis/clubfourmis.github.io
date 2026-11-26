@@ -15,7 +15,7 @@
 }
 
 :root {
-  --brand-yellow: #f1e7ff;
+  --brand-pale: #f1e7ff;
   --brand-purple: #9c00ff;
   --placeholder-gray: #d9d9d9;
   --ink-black: #310050;
@@ -30,7 +30,7 @@
 }
 
 :root.night-mode {
-  --brand-yellow: #9c00ff;
+  --brand-pale: #9c00ff;
   --brand-purple: #f1e7ff;
   --ink-black: #f1e7ff;
   --placeholder-gray: #6b00b3;
@@ -50,7 +50,7 @@ html {
 body {
   margin: 0;
   font-family: var(--font-karrik);
-  background-color: var(--brand-yellow);
+  background-color: var(--brand-pale);
   color: var(--ink-black);
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
@@ -63,7 +63,7 @@ body.modal-open {
 
 .page {
   width: 100%;
-  background-color: var(--brand-yellow);
+  background-color: var(--brand-pale);
   transition: background-color 220ms var(--ease-out);
 }
 
@@ -292,7 +292,7 @@ body.modal-open {
 
 .workshops-more-btn:hover {
   background-color: var(--brand-purple);
-  color: var(--brand-yellow);
+  color: var(--brand-pale);
 }
 
 .workshops-more-btn:focus-visible {
@@ -508,7 +508,7 @@ body.modal-open {
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  background-color: rgba(17, 17, 17, 0.55);
+  background-color: rgba(49, 0, 80, 0.464);
 }
 
 .modal-dialog {
@@ -516,7 +516,7 @@ body.modal-open {
   width: min(520px, 100%);
   max-height: calc(100vh - 3rem);
   overflow-y: auto;
-  background-color: var(--brand-yellow);
+  background-color: var(--brand-pale);
   padding: 0;
 }
 
@@ -531,8 +531,9 @@ body.modal-open {
   align-items: center;
   justify-content: center;
   border: none;
-  background-color: rgba(241, 231, 255, 0.88);
-  color: #310050;
+  border-radius: 50%;
+  background-color: var(--brand-pale);
+  color: var(--brand-purple);
   font-family: var(--font-karrik);
   font-size: 1.5rem;
   line-height: 1;
@@ -540,7 +541,7 @@ body.modal-open {
 }
 
 .modal-close:hover {
-  color: #9c00ff;
+  color: var(--ink-black);
   background-color: #f1e7ff;
 }
 
@@ -621,7 +622,7 @@ body.modal-open {
 
 .modal-register-link:hover {
   background-color: var(--brand-purple);
-  color: var(--brand-yellow);
+  color: var(--brand-pale);
 }
 
 .modal-register-link:focus-visible {
