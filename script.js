@@ -247,6 +247,8 @@
   const modalDesc = document.getElementById('modalDesc');
   const modalActions = document.getElementById('modalActions');
   const modalRegisterLink = document.getElementById('modalRegisterLink');
+  const modalRegisterNote = document.getElementById('modalRegisterNote');
+  const modalNoteMailLink = document.getElementById('modalNoteMailLink');
 
   let lastTrigger = null;
 
@@ -320,15 +322,13 @@
       modalMeta.hidden = !(hasLocation || hasPrice);
     }
 
-    // Lien d'inscription (URL du CSV ou mailto pré-rempli en repli)
+    // Lien d'inscription si présent dans le tableau, sinon mention DM Insta / mail
     if (modalActions && modalRegisterLink) {
       const explicitRegisterUrl = sanitizeExternalUrl(workshop.registerUrl);
-      const fallbackMailto = explicitRegisterUrl ? '' : buildFallbackMailto(workshop);
-      const targetHref = explicitRegisterUrl || fallbackMailto;
 
-      if (targetHref) {
-        modalRegisterLink.href = targetHref;
-        if (explicitRegisterUrl && !/^mailto:/i.test(explicitRegisterUrl)) {
+      if (explicitRegisterUrl) {
+        modalRegisterLink.href = explicitRegisterUrl;
+        if (!/^mailto:/i.test(explicitRegisterUrl)) {
           modalRegisterLink.target = '_blank';
           modalRegisterLink.rel = 'noopener noreferrer';
         } else {
@@ -336,9 +336,16 @@
           modalRegisterLink.removeAttribute('rel');
         }
         modalActions.hidden = false;
+        if (modalRegisterNote) modalRegisterNote.hidden = true;
       } else {
         modalRegisterLink.removeAttribute('href');
         modalActions.hidden = true;
+        if (modalRegisterNote) {
+          if (modalNoteMailLink) {
+            modalNoteMailLink.href = buildFallbackMailto(workshop) || '#contactHeading';
+          }
+          modalRegisterNote.hidden = false;
+        }
       }
     }
 
@@ -386,7 +393,10 @@
     }
   });
 
-  const CSV_CANDIDATES = ['workshops.csv', 'public/workshops.csv'];
+  const GOOGLE_SHEET_CSV_URL =
+    'https://docs.google.com/spreadsheets/d/e/2PACX-1vTj46OK9L6KZcDp3xQmNyuRXFDBpiIDxiL-p-9bYbfmCwTDbsjAG116LRXqZIafVWdPShwGNhs9X9bL/pub?gid=0&single=true&output=csv';
+
+  const CSV_CANDIDATES = [GOOGLE_SHEET_CSV_URL, 'workshops.csv', 'public/workshops.csv'];
 
   /**
    * Construit le DOM des 4 prochains ateliers à venir dans #workshopsGrid.
@@ -527,6 +537,7 @@
 
           return {
             title,
+            rawDate: rawDate.trim(),
             parsedDate,
             displayDate: formatDisplayDate(
               parsedDate,
@@ -543,10 +554,20 @@
           };
         })
         .filter((item) => {
-          if (!item.title || !item.parsedDate) return false;
-          return item.parsedDate.getTime() >= todayMidnight.getTime();
+          if (!item.title || !item.rawDate) return false;
+          if (item.parsedDate) {
+            return item.parsedDate.getTime() >= todayMidnight.getTime();
+          }
+          return true;
         })
-        .sort((a, b) => a.parsedDate.getTime() - b.parsedDate.getTime());
+        .sort((a, b) => {
+          if (a.parsedDate && b.parsedDate) {
+            return a.parsedDate.getTime() - b.parsedDate.getTime();
+          }
+          if (a.parsedDate) return -1;
+          if (b.parsedDate) return 1;
+          return 0;
+        });
 
       isWorkshopsExpanded = false;
       updateWorkshopsView();

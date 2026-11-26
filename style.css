@@ -186,6 +186,29 @@ body.modal-open {
   z-index: 3;
 }
 
+.hero-tagline {
+  position: absolute;
+  right: clamp(1.25rem, 4.5vw, 4rem);
+  bottom: clamp(5rem, 10vh, 10rem);
+  z-index: 5;
+  margin: 0;
+  max-width: calc(100% - 2.5rem);
+  font-family: var(--font-karrik);
+  font-weight: 700;
+  font-size: clamp(2rem, 4.8vw, 4.25rem);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-align: right;
+  color: var(--brand-purple);
+  -webkit-text-stroke: clamp(4px, 0.45vw, 7px) #fff;
+  paint-order: stroke fill;
+  pointer-events: none;
+}
+
+:root.night-mode .hero-tagline {
+  -webkit-text-stroke-color: #9c00ff;
+}
+
 /* Sections communes (100vh chacune) : "Les ateliers", "FAQ" et "Contact" */
 .content-block {
   width: min(1440px, 100%);
@@ -604,6 +627,29 @@ body.modal-open {
 .modal-register-link:focus-visible {
   outline: 2px solid var(--brand-purple);
   outline-offset: 4px;
+}
+
+.modal-register-note[hidden] {
+  display: none;
+}
+
+.modal-register-note {
+  margin: 1.15rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  font-style: italic;
+  color: var(--brand-purple);
+}
+
+.modal-inline-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.modal-inline-link:hover,
+.modal-inline-link:focus-visible {
+  opacity: 0.78;
 }
 
 /* Responsive mobile (<= 760px) */
